@@ -29,4 +29,27 @@
     }
     outputContainer.textContent = output;
   });
+
+  const draggableElement = document.getElementById("ex3_element");
+  const sourceContainer = document.getElementById("ex3_one");
+  const targetContainer = document.getElementById("ex3_two");
+
+  draggableElement.addEventListener("dragstart", (event) => {
+    event.dataTransfer.setData("text/plain", draggableElement.id);
+    event.dataTransfer.effectAllowed = "move";
+  });
+
+  targetContainer.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  });
+
+  targetContainer.addEventListener("drop", (event) => {
+    event.preventDefault();
+    const draggedId = event.dataTransfer.getData("text/plain");
+
+    if (draggedId === draggableElement.id && draggableElement.parentElement === sourceContainer) {
+      targetContainer.appendChild(draggableElement);
+    }
+  });
 })();
