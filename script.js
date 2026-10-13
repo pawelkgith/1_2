@@ -39,16 +39,26 @@
     event.dataTransfer.effectAllowed = "move";
   });
 
-  targetContainer.addEventListener("dragover", (event) => {
+  [sourceContainer, targetContainer].forEach((container) => {
+    container.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = "move";
+    });
+  });
+
+  sourceContainer.addEventListener("drop", (event) => {
     event.preventDefault();
-    event.dataTransfer.dropEffect = "move";
+    const draggedId = event.dataTransfer.getData("text/plain");
+
+    if (draggedId === draggableElement.id)
+      sourceContainer.appendChild(draggableElement);
   });
 
   targetContainer.addEventListener("drop", (event) => {
     event.preventDefault();
     const draggedId = event.dataTransfer.getData("text/plain");
 
-    if (draggedId === draggableElement.id && draggableElement.parentElement === sourceContainer) {
+    if (draggedId === draggableElement.id) {
       targetContainer.appendChild(draggableElement);
     }
   });
